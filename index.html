@@ -203,6 +203,7 @@
   /* ================= 最后一屏:打印 ================= */
   .footer-screen{gap:22px;text-align:center;}
   .footer-screen h2{font-family:'MedievalSharp',serif;font-size:clamp(32px,8vw,60px);color:var(--text);letter-spacing:.03em;}
+  .footer-screen .credit{margin-top:18px;font-size:11px;letter-spacing:.06em;color:var(--muted);opacity:.5;}
   .footer-screen p{color:var(--muted);font-size:clamp(14px,3.2vw,17px);letter-spacing:.15em;line-height:2;}
   .btn{
     cursor:pointer;border:1px solid var(--gold);background:transparent;color:var(--gold);
@@ -235,7 +236,7 @@
 </head>
 <body class="lock">
 
-  <audio id="bgm" loop preload="auto" src="nuvole-bianche.mp3"></audio>
+  <audio id="bgm" loop preload="auto" src="gymnopedie-no1.mp3"></audio>
   <button class="mute" id="mute" type="button" title="音乐开关">♪</button>
 
   <!-- 开场:逐句点击浮现 -->
@@ -346,6 +347,7 @@
   <section class="screen footer-screen" id="s-footer">
     <h2>THAT'S IT.</h2>
     <button class="btn" id="btn-print" type="button">PRINT</button>
+    <div class="credit">Music · Gymnopédie No.1 by Kevin MacLeod (incompetech.com) · CC BY 4.0</div>
   </section>
 
 <script>
