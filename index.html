@@ -1,160 +1,371 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DeepSeek</title>
-  <style>
-    :root {
-      --brand: #4d6bfe;
-      --brand-dark: #3a56d4;
-      --text: #1f2430;
-      --muted: #6b7280;
-      --bg: #f4f6fb;
-      --card: #ffffff;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-        "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(160deg, #eef2ff 0%, var(--bg) 45%, #e8f0ff 100%);
-      color: var(--text);
-      padding: 24px;
-    }
-    .card {
-      width: 100%;
-      max-width: 620px;
-      background: var(--card);
-      border-radius: 20px;
-      padding: 48px 44px;
-      box-shadow: 0 20px 60px rgba(77, 107, 254, 0.12);
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-    .logo .whale { font-size: 34px; line-height: 1; }
-    .logo h1 {
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-    .intro {
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.9;
-      text-align: justify;
-      margin-bottom: 36px;
-    }
-    .jump-label {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 10px;
-      letter-spacing: 0.5px;
-    }
-    .jump-row {
-      display: flex;
-      gap: 10px;
-    }
-    .jump-row input {
-      flex: 1;
-      height: 48px;
-      padding: 0 16px;
-      font-size: 15px;
-      border: 1.5px solid #e2e6f0;
-      border-radius: 12px;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .jump-row input:focus {
-      border-color: var(--brand);
-      box-shadow: 0 0 0 4px rgba(77, 107, 254, 0.12);
-    }
-    .jump-row button {
-      height: 48px;
-      padding: 0 26px;
-      font-size: 15px;
-      font-weight: 600;
-      color: #fff;
-      background: var(--brand);
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-    }
-    .jump-row button:hover { background: var(--brand-dark); }
-    .jump-row button:active { transform: translateY(1px); }
-    .hint {
-      margin-top: 12px;
-      font-size: 12px;
-      color: #9aa1b2;
-    }
-    .msg {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #e5484d;
-      min-height: 18px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>旅行支票 · 神秘小奇公司</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3e2bd;
+    --paper-deep:#e9d3a0;
+    --paper-edge:#dcc28b;
+    --ink:#3a2a18;
+    --brown:#5a3a22;
+    --orange:#c84c2c;
+    --red:#a83220;
+    --red-deep:#7c2415;
+    --line:rgba(90,58,34,.38);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:'Noto Serif SC',serif;
+    color:var(--ink);
+    background:#221508;
+    background-image:radial-gradient(1200px 800px at 50% 22%,#3a2413 0%,#1c1208 70%);
+    display:flex;align-items:center;justify-content:center;
+    min-height:100vh;padding:28px;position:relative;overflow-x:hidden;
+  }
+
+  /* ---------- 开场屏 ---------- */
+  #intro{
+    position:fixed;inset:0;z-index:50;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;
+    background:inherit;text-align:center;padding:24px;
+    transition:opacity .6s ease, visibility .6s;
+  }
+  #intro.hide{opacity:0;visibility:hidden;pointer-events:none;}
+  .intro-seal{
+    width:92px;height:92px;border-radius:50%;
+    border:3px dashed var(--orange);color:var(--orange);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Abril Fatface',serif;font-size:34px;line-height:1;
+    transform:rotate(-8deg);
+  }
+  .intro-title{font-family:'Abril Fatface',serif;font-size:clamp(28px,5vw,48px);color:#f3e2bd;letter-spacing:.04em;}
+  .intro-sub{font-size:15px;letter-spacing:.35em;color:#caa876;}
+  .btn{
+    cursor:pointer;border:none;background:var(--orange);color:#f8ecd0;
+    font-family:'Noto Serif SC',serif;font-size:16px;letter-spacing:.25em;
+    padding:14px 44px;border-radius:2px;box-shadow:0 4px 0 var(--red-deep);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--red-deep);}
+  .btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--red-deep);}
+
+  /* ---------- 场景 ---------- */
+  #stage{display:flex;flex-direction:column;align-items:center;gap:22px;opacity:0;transform:scale(.92);transition:opacity .8s ease, transform .8s ease;}
+  #stage.show{opacity:1;transform:scale(1);}
+
+  /* ---------- 支票 3D 容器 ---------- */
+  .cheque-scene{perspective:1600px;width:100%;max-width:860px;}
+  .cheque{position:relative;width:100%;aspect-ratio:860/430;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.6,.05,.2,1);}
+  .cheque.flipped{transform:rotateY(180deg);}
+  .face{
+    position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(200,76,44,.06), transparent 38%),
+      radial-gradient(circle at 88% 80%, rgba(90,58,34,.08), transparent 40%),
+      repeating-linear-gradient(0deg, transparent 0 3px, rgba(90,58,34,.02) 3px 4px),
+      var(--paper);
+    border:2px solid var(--brown);
+    box-shadow:0 24px 60px rgba(0,0,0,.55);
+    padding:26px 30px;
+    display:flex;flex-direction:column;
+    overflow:hidden;
+  }
+  .face::before{
+    content:"";position:absolute;inset:8px;border:1px solid var(--line);pointer-events:none;
+  }
+  .back{transform:rotateY(180deg);background:
+    radial-gradient(circle at 20% 20%, rgba(200,76,44,.05), transparent 40%),
+    var(--paper);}
+
+  /* 撕线缺口(上下) */
+  .perf{position:absolute;left:0;right:0;height:14px;pointer-events:none;z-index:3;}
+  .perf.top{top:-1px;}
+  .perf.bottom{bottom:-1px;}
+  .perf span{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:12px;height:12px;border-radius:50%;background:#221508;
+  }
+  .perf span:nth-child(1){left:-7px;}.perf span:nth-child(2){left:25%;}
+  .perf span:nth-child(3){left:50%;}.perf span:nth-child(4){left:75%;}
+  .perf span:nth-child(5){right:-7px;}
+
+  /* 经纬线底纹 */
+  .grid{position:absolute;inset:0;opacity:.5;pointer-events:none;}
+  .grid line{stroke:var(--brown);stroke-width:.7;}
+  .grid text{fill:var(--brown);font-family:'Special Elite',monospace;font-size:9px;opacity:.7;}
+
+  /* ---------- 正面内容 ---------- */
+  .front-inner{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;}
+  .head{display:flex;justify-content:space-between;align-items:flex-start;}
+  .issuer{line-height:1.35;}
+  .issuer .cn{font-weight:900;font-size:19px;letter-spacing:.12em;color:var(--brown);}
+  .issuer .en{font-family:'Abril Fatface',serif;font-size:13px;letter-spacing:.14em;color:var(--orange);}
+  .head .doc{text-align:right;}
+  .head .doc .en{font-family:'Abril Fatface',serif;font-size:24px;color:var(--orange);letter-spacing:.03em;}
+  .head .doc .cn{font-size:13px;letter-spacing:.5em;color:var(--brown);margin-top:2px;}
+
+  .payee{display:flex;align-items:baseline;gap:12px;margin-top:20px;}
+  .payee .k{font-size:13px;letter-spacing:.3em;color:var(--brown);}
+  .payee .v{font-size:22px;font-weight:700;border-bottom:2px solid var(--brown);padding:0 8px 4px;letter-spacing:.1em;}
+
+  .amount{margin-top:18px;text-align:center;}
+  .amount .en{font-family:'Abril Fatface',serif;font-size:clamp(34px,6vw,60px);color:var(--orange);line-height:1;letter-spacing:.02em;}
+  .amount .cn{font-size:20px;letter-spacing:.4em;color:var(--brown);margin-top:6px;}
+
+  .detail{display:flex;justify-content:space-between;margin-top:16px;font-family:'Special Elite',monospace;}
+  .detail .cell{display:flex;flex-direction:column;gap:3px;}
+  .detail .k{font-size:10px;letter-spacing:.18em;color:var(--brown);opacity:.85;}
+  .detail .v{font-size:17px;color:var(--red-deep);letter-spacing:.08em;}
+
+  .sign-row{display:flex;gap:34px;margin-top:20px;}
+  .sign-slot{flex:1;}
+  .sign-slot .lbl{font-size:10px;letter-spacing:.18em;color:var(--brown);opacity:.9;font-family:'Special Elite',monospace;}
+  .sign-slot .lbl .cn{font-family:'Noto Serif SC',serif;font-size:12px;letter-spacing:.2em;}
+  .sign-line{height:40px;margin-top:6px;border-bottom:2px solid var(--brown);position:relative;}
+  .issuer-sign{font-family:'Ma Shan Zheng',cursive;font-size:30px;color:var(--ink);padding-left:4px;transform:rotate(-4deg);}
+  .line-blank{display:block;height:100%;}
+  .line-signed{display:none;font-family:'Ma Shan Zheng',cursive;font-size:28px;color:var(--red-deep);transform:rotate(-3deg);}
+
+  /* 确认签收按钮 */
+  .btn-confirm{
+    position:absolute;right:4px;bottom:6px;cursor:pointer;border:1px solid var(--orange);
+    background:transparent;color:var(--orange);font-family:'Noto Serif SC',serif;
+    font-size:12px;letter-spacing:.15em;padding:5px 14px;border-radius:2px;
+    transition:background .2s,color .2s;
+  }
+  .btn-confirm:hover{background:var(--orange);color:#f8ecd0;}
+  .sign-slot.signed .line-blank{display:none;}
+  .sign-slot.signed .line-signed{display:block;}
+  .sign-slot.signed .btn-confirm{display:none;}
+
+  /* 盖章 */
+  .stamp{
+    position:absolute;top:30%;left:62%;width:150px;height:150px;z-index:6;
+    opacity:0;transform:scale(2.6) rotate(-24deg);transform-origin:center;
+    pointer-events:none;
+  }
+  .stamp.hit{animation:stamp-hit .5s cubic-bezier(.2,1.6,.4,1) forwards;}
+  @keyframes stamp-hit{
+    0%{opacity:0;transform:scale(2.6) rotate(-24deg);}
+    55%{opacity:1;transform:scale(.92) rotate(-8deg);}
+    100%{opacity:.88;transform:scale(1) rotate(-8deg);}
+  }
+  .stamp .st{fill:var(--red);opacity:.88;}
+  .stamp .st-text{fill:#f8ecd0;font-family:'Special Elite',monospace;}
+  .cheque.shake{animation:shake .3s;}
+  @keyframes shake{0%,100%{transform:translate(0,0) rotateY(0);}25%{transform:translate(-4px,2px) rotateY(0);}50%{transform:translate(4px,-2px) rotateY(0);}75%{transform:translate(-2px,1px) rotateY(0);}}
+
+  /* 控制按钮 */
+  .controls{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+  .btn.ghost{background:transparent;box-shadow:none;border:1px solid var(--orange);color:var(--orange);}
+  .btn.ghost:hover{background:rgba(200,76,44,.1);box-shadow:none;}
+
+  /* ---------- 背面 ---------- */
+  .back-inner{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;}
+  .back-inner .doc{font-family:'Abril Fatface',serif;color:var(--orange);font-size:16px;letter-spacing:.2em;}
+  .terms{margin-top:22px;font-size:16px;line-height:2;color:var(--ink);}
+  .terms li{list-style:none;position:relative;padding-left:26px;}
+  .terms li::before{content:"§";position:absolute;left:0;color:var(--orange);font-family:'Special Elite',monospace;}
+  .terms .en{font-family:'Special Elite',monospace;color:var(--brown);font-size:13px;}
+  .note{margin-top:auto;padding-top:18px;color:var(--brown);font-size:14px;letter-spacing:.05em;text-align:center;}
+  .note .dash{color:var(--line);letter-spacing:.3em;}
+
+  /* ---------- 打印 ---------- */
+  @media print{
+    body{background:#fff;display:block;padding:0;}
+    #intro{display:none !important;}
+    .controls{display:none !important;}
+    .btn-confirm{display:none !important;}
+    #stage{opacity:1;transform:none;}
+    .cheque-scene{perspective:none;max-width:100%;}
+    .cheque{transform:none !important;transition:none;aspect-ratio:auto;}
+    .face{position:relative;inset:auto;backface-visibility:visible;-webkit-backface-visibility:visible;
+      transform:none;box-shadow:none;aspect-ratio:auto;height:auto;min-height:200px;page-break-after:always;}
+    .back{transform:none;page-break-after:auto;}
+    /* 打印版签名栏留空供手写 */
+    .sign-slot.signed .line-signed{display:none !important;}
+    .sign-slot.signed .line-blank{display:block !important;height:48px;}
+    .sign-line{height:48px;}
+    .stamp{display:none !important;}
+    .grid{opacity:.35;}
+  }
+</style>
 </head>
 <body>
-  <div class="card">
-    <div class="logo">
-      <span class="whale">🐋</span>
-      <h1>DeepSeek</h1>
-    </div>
 
-    <p class="intro">
-      DeepSeek（深度求索）是一家中国人工智能公司，由幻方量化于 2023 年创立，
-      专注于研发先进的大语言模型。公司秉持开源、普惠的理念，先后发布了
-      DeepSeek-V2、DeepSeek-V3、DeepSeek-Coder 及擅长推理的 DeepSeek-R1 等模型。
-      2025 年初，R1 以卓越的推理能力和极低的训练成本引发全球关注，被评价为用
-      远低于同类大模型的成本达到了国际顶尖水平。其产品覆盖对话助手与编程助手，
-      支持网页、App 与 API 等多种使用方式，致力于让智能触手可及。
-    </p>
-
-    <div class="jump-label">输入网址，直接进入</div>
-    <div class="jump-row">
-      <input id="url" type="text" placeholder="例如 baidu.com 或 https://..." autocomplete="off" spellcheck="false" />
-      <button id="go">进入</button>
-    </div>
-    <div class="hint">按回车键或点击「进入」，将在当前页跳转到目标网站</div>
-    <div class="msg" id="msg"></div>
+  <!-- 开场屏 -->
+  <div id="intro">
+    <div class="intro-seal">Q</div>
+    <div class="intro-title">A TRAVELLER'S CHECK</div>
+    <div class="intro-sub">一份只给你的旅行凭证</div>
+    <button class="btn" id="btn-open" type="button">拆 开</button>
   </div>
 
-  <script>
-    var input = document.getElementById('url');
-    var go = document.getElementById('go');
-    var msg = document.getElementById('msg');
+  <!-- 主场景 -->
+  <div id="stage">
+    <div class="cheque-scene">
+      <div class="cheque" id="cheque">
 
-    function jump() {
-      var raw = input.value.trim();
-      msg.textContent = '';
-      if (!raw) { input.focus(); return; }
+        <!-- ============ 正面 ============ -->
+        <section class="face front">
+          <div class="perf top"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="perf bottom"><span></span><span></span><span></span><span></span><span></span></div>
 
-      // 已显式带协议但不是 http/https（如 javascript:、ftp:、mailto:），直接拒绝
-      if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(raw) && !/^https?:\/\//i.test(raw)) {
-        msg.textContent = '仅支持 http:// 或 https:// 网址';
-        input.focus();
-        return;
-      }
+          <!-- 经纬线 -->
+          <svg class="grid" viewBox="0 0 860 430" preserveAspectRatio="none">
+            <line x1="86" y1="0" x2="86" y2="430"/><line x1="215" y1="0" x2="215" y2="430"/>
+            <line x1="344" y1="0" x2="344" y2="430"/><line x1="473" y1="0" x2="473" y2="430"/>
+            <line x1="602" y1="0" x2="602" y2="430"/><line x1="731" y1="0" x2="731" y2="430"/>
+            <line x1="0" y1="86" x2="860" y2="86"/><line x1="0" y1="172" x2="860" y2="172"/>
+            <line x1="0" y1="258" x2="860" y2="258"/><line x1="0" y1="344" x2="860" y2="344"/>
+            <text x="8" y="84">60°N</text><text x="8" y="170">30°N</text><text x="8" y="256">0°</text>
+            <text x="8" y="342">30°S</text><text x="852" y="84" text-anchor="end">60°S</text>
+            <text x="90" y="424">90°W</text><text x="348" y="424">0°</text><text x="606" y="424">90°E</text>
+          </svg>
 
-      var url = raw;
-      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
-      window.location.href = url;
-    }
+          <div class="front-inner">
+            <div class="head">
+              <div class="issuer">
+                <div class="cn">神秘小奇公司</div>
+                <div class="en">MYSTERY Q &amp; CO.</div>
+              </div>
+              <div class="doc">
+                <div class="en">TRAVELLER'S CHECK</div>
+                <div class="cn">旅行支票</div>
+              </div>
+            </div>
 
-    go.addEventListener('click', jump);
-    input.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') jump();
-    });
-    input.focus();
-  </script>
+            <div class="payee">
+              <span class="k">凭票即付 PAY TO</span>
+              <span class="v">小海同学</span>
+            </div>
+
+            <div class="amount">
+              <div class="en">ONE UNKNOWN JOURNEY</div>
+              <div class="cn">壹次未知的旅行</div>
+            </div>
+
+            <div class="detail">
+              <div class="cell">
+                <span class="k">DESTINATION 目的地</span>
+                <span class="v">未知 · UNKNOWN</span>
+              </div>
+              <div class="cell" style="text-align:center;">
+                <span class="k">AMOUNT 金额</span>
+                <span class="v">未知 · UNKNOWN</span>
+              </div>
+              <div class="cell" style="text-align:right;">
+                <span class="k">VALID 有效期</span>
+                <span class="v">三年 · 3 YEARS</span>
+              </div>
+            </div>
+
+            <div class="sign-row">
+              <div class="sign-slot issuer">
+                <div class="lbl">SIGNATURE OF ISSUER <span class="cn">签发</span></div>
+                <div class="sign-line"><span class="issuer-sign">Q</span></div>
+              </div>
+              <div class="sign-slot holder" id="holder">
+                <div class="lbl">SIGNATURE OF HOLDER <span class="cn">持票人签名</span></div>
+                <div class="sign-line">
+                  <span class="line-blank"></span>
+                  <span class="line-signed">小海同学 · 已签收</span>
+                  <button class="btn-confirm" id="btn-confirm" type="button">确认签收</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail" style="margin-top:14px;border-top:1px dashed var(--line);padding-top:10px;">
+              <div class="cell"><span class="k">NO. 编号</span><span class="v">20250905</span></div>
+              <div class="cell" style="text-align:right;"><span class="k">ISSUE DATE 出票日</span><span class="v">2025.09.05</span></div>
+            </div>
+          </div>
+
+          <!-- 邮戳(签收后盖上) -->
+          <svg class="stamp" id="stamp" viewBox="0 0 100 100">
+            <circle class="st" cx="50" cy="50" r="48" fill="none" stroke-width="2"/>
+            <circle class="st" cx="50" cy="50" r="36" fill="none" stroke-width="1"/>
+            <defs>
+              <path id="stampRing" d="M50,50 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/>
+            </defs>
+            <text class="st-text" font-size="8.5" letter-spacing="1">
+              <textPath href="#stampRing">神秘小奇公司 · MYSTERY Q &amp; CO.</textPath>
+            </text>
+            <text class="st-text" x="50" y="50" text-anchor="middle" font-size="11">兑付专用</text>
+            <text class="st-text" x="50" y="61" text-anchor="middle" font-size="7">2025.09.05</text>
+          </svg>
+        </section>
+
+        <!-- ============ 背面 ============ -->
+        <section class="face back">
+          <div class="perf top"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="perf bottom"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="back-inner">
+            <div class="doc">TERMS · 兑换条款</div>
+            <ul class="terms">
+              <li>凭此支票到「神秘小奇公司」兑换,有效期三年。<br><span class="en">Redeemable at Mystery Q &amp; Co. within three years.</span></li>
+            </ul>
+            <div class="note">
+              <span class="dash">— — — — — — — — — — — —</span><br>
+              ( 一段话 · 待填 )
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="btn-flip" type="button">查看背面条款</button>
+      <button class="btn ghost" id="btn-print" type="button">打印 / 手写签字</button>
+    </div>
+  </div>
+
+<script>
+  const intro = document.getElementById('intro');
+  const stage = document.getElementById('stage');
+  const cheque = document.getElementById('cheque');
+  const holder = document.getElementById('holder');
+  const stamp = document.getElementById('stamp');
+  const btnOpen = document.getElementById('btn-open');
+  const btnConfirm = document.getElementById('btn-confirm');
+  const btnFlip = document.getElementById('btn-flip');
+  const btnPrint = document.getElementById('btn-print');
+
+  // 拆开 → 支票浮现
+  btnOpen.addEventListener('click', () => {
+    intro.classList.add('hide');
+    stage.classList.add('show');
+  });
+
+  // 确认签收 → 盖章 + 震动
+  btnConfirm.addEventListener('click', () => {
+    holder.classList.add('signed');
+    stamp.classList.remove('hit');
+    void stamp.offsetWidth;          // 重置动画
+    stamp.classList.add('hit');
+    cheque.classList.remove('shake');
+    void cheque.offsetWidth;
+    cheque.classList.add('shake');
+  });
+
+  // 翻转
+  let flipped = false;
+  btnFlip.addEventListener('click', () => {
+    flipped = !flipped;
+    cheque.classList.toggle('flipped', flipped);
+    btnFlip.textContent = flipped ? '翻回正面' : '查看背面条款';
+  });
+
+  // 打印
+  btnPrint.addEventListener('click', () => window.print());
+</script>
 </body>
 </html>
