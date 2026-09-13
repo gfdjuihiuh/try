@@ -53,6 +53,17 @@
     animation:hint-breath 2.8s ease-in-out infinite;
   }
   .phint.dot{font-size:22px;letter-spacing:0;}
+
+  /* 音乐开关 */
+  .mute{
+    position:fixed;top:18px;right:18px;z-index:200;
+    width:42px;height:42px;border-radius:50%;
+    border:1px solid var(--line);background:rgba(20,20,26,.55);color:var(--gold);
+    cursor:pointer;font-size:18px;line-height:1;
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity .3s,color .3s;
+  }
+  .mute.off{color:var(--muted);opacity:.45;text-decoration:line-through;}
   @keyframes hint-breath{0%,100%{opacity:.35;}50%{opacity:.9;}}
 
   /* ================= 每一屏 ================= */
@@ -209,7 +220,7 @@
     }
     *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
     body{background:#fff;}
-    #prologue,.footer-screen{display:none !important;}
+    #prologue,.footer-screen,.mute{display:none !important;}
     .screen{min-height:0;padding:0;opacity:1;transform:none;}
     .cheque{max-width:100%;box-shadow:none;margin:0 0 24px;background:#ffffff;}
     .cheque::before{border-color:rgba(58,42,24,.28);}
@@ -223,6 +234,9 @@
 </style>
 </head>
 <body class="lock">
+
+  <audio id="bgm" loop preload="auto" src="nuvole-bianche.mp3"></audio>
+  <button class="mute" id="mute" type="button" title="音乐开关">♪</button>
 
   <!-- 开场:逐句点击浮现 -->
   <div id="prologue">
@@ -343,6 +357,8 @@
   const btnConfirm = document.getElementById('btn-confirm');
   const btnPrint = document.getElementById('btn-print');
   const egg = document.getElementById('egg');
+  const bgm = document.getElementById('bgm');
+  const muteBtn = document.getElementById('mute');
 
   const lines = [
     '你好',
@@ -382,7 +398,16 @@
     }, 750);
   }
 
+  let bgmStarted = false;
+  function startBgm(){
+    if (bgmStarted) return;
+    bgmStarted = true;
+    bgm.volume = 0.35;
+    bgm.play().catch(() => {});
+  }
+
   prologue.addEventListener('click', () => {
+    startBgm();
     if (busy) return;
     if (idx < lines.length - 1) {
       idx++;
@@ -392,6 +417,11 @@
       document.body.classList.remove('lock');
       window.scrollTo(0, 0);
     }
+  });
+
+  muteBtn.addEventListener('click', () => {
+    bgm.muted = !bgm.muted;
+    muteBtn.classList.toggle('off', bgm.muted);
   });
 
   // 滚动淡入
