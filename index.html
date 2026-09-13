@@ -52,6 +52,7 @@
     font-size:13px;letter-spacing:.5em;color:rgba(201,168,106,.55);
     animation:hint-breath 2.8s ease-in-out infinite;
   }
+  .phint.dot{font-size:22px;letter-spacing:0;}
   @keyframes hint-breath{0%,100%{opacity:.35;}50%{opacity:.9;}}
 
   /* ================= 每一屏 ================= */
@@ -376,7 +377,8 @@
       pline.classList.remove('out');
       busy = false;
       if (i === lines.length - 1) {
-        phint.textContent = '〔 点击展开 〕';
+        phint.textContent = '·';
+        phint.classList.add('dot');
       }
     }, 750);
   }
