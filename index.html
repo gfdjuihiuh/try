@@ -20,124 +20,106 @@
     --line:rgba(90,58,34,.38);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  html,body{height:100%;}
+  html{scroll-behavior:smooth;}
   body{
     font-family:'Noto Serif SC',serif;
     color:var(--ink);
     background:#221508;
-    background-image:radial-gradient(1200px 800px at 50% 22%,#3a2413 0%,#1c1208 70%);
-    display:flex;align-items:center;justify-content:center;
-    min-height:100vh;padding:28px;position:relative;overflow-x:hidden;
+    background-image:radial-gradient(1400px 900px at 50% 0%,#3a2413 0%,#1c1208 70%);
+    overflow-x:hidden;
   }
 
-  /* ---------- 开场屏 ---------- */
-  #intro{
-    position:fixed;inset:0;z-index:50;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;
-    background:inherit;text-align:center;padding:24px;
-    transition:opacity .6s ease, visibility .6s;
+  /* ---------- 每一屏 ---------- */
+  .screen{
+    min-height:100vh;min-height:100svh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:40px 20px;position:relative;
+    opacity:0;transform:translateY(28px);
+    transition:opacity .7s ease, transform .7s ease;
   }
-  #intro.hide{opacity:0;visibility:hidden;pointer-events:none;}
-  .intro-seal{
-    width:92px;height:92px;border-radius:50%;
+  .screen.in{opacity:1;transform:none;}
+
+  /* ---------- 第1屏:开场 ---------- */
+  .hero{gap:24px;text-align:center;}
+  .hero .seal{
+    width:96px;height:96px;border-radius:50%;
     border:3px dashed var(--orange);color:var(--orange);
     display:flex;align-items:center;justify-content:center;
-    font-family:'Abril Fatface',serif;font-size:34px;line-height:1;
+    font-family:'Abril Fatface',serif;font-size:36px;line-height:1;
     transform:rotate(-8deg);
   }
-  .intro-title{font-family:'Abril Fatface',serif;font-size:clamp(28px,5vw,48px);color:#f3e2bd;letter-spacing:.04em;}
-  .intro-sub{font-size:15px;letter-spacing:.35em;color:#caa876;}
-  .btn{
-    cursor:pointer;border:none;background:var(--orange);color:#f8ecd0;
-    font-family:'Noto Serif SC',serif;font-size:16px;letter-spacing:.25em;
-    padding:14px 44px;border-radius:2px;box-shadow:0 4px 0 var(--red-deep);
-    transition:transform .12s ease, box-shadow .12s ease;
-  }
-  .btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--red-deep);}
-  .btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--red-deep);}
+  .hero h1{font-family:'Abril Fatface',serif;font-size:clamp(40px,10vw,88px);color:#f3e2bd;letter-spacing:.03em;line-height:1.05;}
+  .hero .sub{font-size:clamp(15px,3.5vw,20px);letter-spacing:.4em;color:#caa876;margin-top:6px;}
+  .scroll-hint{margin-top:34px;color:#caa876;font-size:13px;letter-spacing:.3em;animation:float 2s ease-in-out infinite;}
+  .scroll-hint .arrow{display:block;font-size:26px;margin-top:6px;}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(8px);}}
 
-  /* ---------- 场景 ---------- */
-  #stage{display:flex;flex-direction:column;align-items:center;gap:22px;opacity:0;transform:scale(.92);transition:opacity .8s ease, transform .8s ease;}
-  #stage.show{opacity:1;transform:scale(1);}
-
-  /* ---------- 支票 3D 容器 ---------- */
-  .cheque-scene{perspective:1600px;width:100%;max-width:860px;}
-  .cheque{position:relative;width:100%;aspect-ratio:860/430;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.6,.05,.2,1);}
-  .cheque.flipped{transform:rotateY(180deg);}
-  .face{
-    position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  /* ---------- 支票卡片 ---------- */
+  .cheque{
+    width:100%;max-width:900px;
+    position:relative;
     background:
       radial-gradient(circle at 12% 18%, rgba(200,76,44,.06), transparent 38%),
       radial-gradient(circle at 88% 80%, rgba(90,58,34,.08), transparent 40%),
       repeating-linear-gradient(0deg, transparent 0 3px, rgba(90,58,34,.02) 3px 4px),
       var(--paper);
     border:2px solid var(--brown);
-    box-shadow:0 24px 60px rgba(0,0,0,.55);
-    padding:26px 30px;
+    box-shadow:0 30px 70px rgba(0,0,0,.6);
+    padding:clamp(24px,5vw,40px);
     display:flex;flex-direction:column;
     overflow:hidden;
   }
-  .face::before{
-    content:"";position:absolute;inset:8px;border:1px solid var(--line);pointer-events:none;
-  }
-  .back{transform:rotateY(180deg);background:
-    radial-gradient(circle at 20% 20%, rgba(200,76,44,.05), transparent 40%),
-    var(--paper);}
+  .cheque::before{content:"";position:absolute;inset:9px;border:1px solid var(--line);pointer-events:none;z-index:1;}
 
-  /* 撕线缺口(上下) */
   .perf{position:absolute;left:0;right:0;height:14px;pointer-events:none;z-index:3;}
   .perf.top{top:-1px;}
   .perf.bottom{bottom:-1px;}
-  .perf span{
-    position:absolute;top:50%;transform:translateY(-50%);
-    width:12px;height:12px;border-radius:50%;background:#221508;
-  }
+  .perf span{position:absolute;top:50%;transform:translateY(-50%);width:13px;height:13px;border-radius:50%;background:#221508;}
   .perf span:nth-child(1){left:-7px;}.perf span:nth-child(2){left:25%;}
   .perf span:nth-child(3){left:50%;}.perf span:nth-child(4){left:75%;}
   .perf span:nth-child(5){right:-7px;}
 
-  /* 经纬线底纹 */
   .grid{position:absolute;inset:0;opacity:.5;pointer-events:none;}
   .grid line{stroke:var(--brown);stroke-width:.7;}
   .grid text{fill:var(--brown);font-family:'Special Elite',monospace;font-size:9px;opacity:.7;}
 
-  /* ---------- 正面内容 ---------- */
-  .front-inner{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;}
-  .head{display:flex;justify-content:space-between;align-items:flex-start;}
+  .inner{position:relative;z-index:2;display:flex;flex-direction:column;}
+
+  .head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;}
   .issuer{line-height:1.35;}
-  .issuer .cn{font-weight:900;font-size:19px;letter-spacing:.12em;color:var(--brown);}
-  .issuer .en{font-family:'Abril Fatface',serif;font-size:13px;letter-spacing:.14em;color:var(--orange);}
+  .issuer .cn{font-weight:900;font-size:clamp(19px,4.5vw,26px);letter-spacing:.12em;color:var(--brown);}
+  .issuer .en{font-family:'Abril Fatface',serif;font-size:clamp(12px,2.6vw,15px);letter-spacing:.14em;color:var(--orange);}
   .head .doc{text-align:right;}
-  .head .doc .en{font-family:'Abril Fatface',serif;font-size:24px;color:var(--orange);letter-spacing:.03em;}
-  .head .doc .cn{font-size:13px;letter-spacing:.5em;color:var(--brown);margin-top:2px;}
+  .head .doc .en{font-family:'Abril Fatface',serif;font-size:clamp(24px,6vw,36px);color:var(--orange);letter-spacing:.03em;}
+  .head .doc .cn{font-size:clamp(12px,2.8vw,15px);letter-spacing:.5em;color:var(--brown);margin-top:2px;}
 
-  .payee{display:flex;align-items:baseline;gap:12px;margin-top:20px;}
-  .payee .k{font-size:13px;letter-spacing:.3em;color:var(--brown);}
-  .payee .v{font-size:22px;font-weight:700;border-bottom:2px solid var(--brown);padding:0 8px 4px;letter-spacing:.1em;}
+  .payee{display:flex;align-items:baseline;gap:12px;margin-top:clamp(16px,4vw,28px);flex-wrap:wrap;}
+  .payee .k{font-size:clamp(12px,2.6vw,14px);letter-spacing:.3em;color:var(--brown);}
+  .payee .v{font-size:clamp(24px,6vw,34px);font-weight:700;border-bottom:2px solid var(--brown);padding:0 8px 4px;letter-spacing:.1em;}
 
-  .amount{margin-top:18px;text-align:center;}
-  .amount .en{font-family:'Abril Fatface',serif;font-size:clamp(34px,6vw,60px);color:var(--orange);line-height:1;letter-spacing:.02em;}
-  .amount .cn{font-size:20px;letter-spacing:.4em;color:var(--brown);margin-top:6px;}
+  .amount{margin-top:clamp(18px,4.5vw,32px);text-align:center;}
+  .amount .en{font-family:'Abril Fatface',serif;font-size:clamp(40px,11vw,84px);color:var(--orange);line-height:1;letter-spacing:.02em;}
+  .amount .cn{font-size:clamp(20px,5vw,30px);letter-spacing:.4em;color:var(--brown);margin-top:8px;}
 
-  .detail{display:flex;justify-content:space-between;margin-top:16px;font-family:'Special Elite',monospace;}
-  .detail .cell{display:flex;flex-direction:column;gap:3px;}
-  .detail .k{font-size:10px;letter-spacing:.18em;color:var(--brown);opacity:.85;}
-  .detail .v{font-size:17px;color:var(--red-deep);letter-spacing:.08em;}
+  .detail{display:flex;justify-content:space-between;margin-top:clamp(18px,4vw,30px);font-family:'Special Elite',monospace;gap:10px;flex-wrap:wrap;}
+  .detail .cell{display:flex;flex-direction:column;gap:4px;}
+  .detail .cell.center{text-align:center;}
+  .detail .cell.right{text-align:right;}
+  .detail .k{font-size:clamp(10px,2.2vw,12px);letter-spacing:.18em;color:var(--brown);opacity:.85;}
+  .detail .v{font-size:clamp(17px,4vw,24px);color:var(--red-deep);letter-spacing:.08em;}
 
-  .sign-row{display:flex;gap:34px;margin-top:20px;}
-  .sign-slot{flex:1;}
-  .sign-slot .lbl{font-size:10px;letter-spacing:.18em;color:var(--brown);opacity:.9;font-family:'Special Elite',monospace;}
-  .sign-slot .lbl .cn{font-family:'Noto Serif SC',serif;font-size:12px;letter-spacing:.2em;}
-  .sign-line{height:40px;margin-top:6px;border-bottom:2px solid var(--brown);position:relative;}
-  .issuer-sign{font-family:'Ma Shan Zheng',cursive;font-size:30px;color:var(--ink);padding-left:4px;transform:rotate(-4deg);}
+  .sign-row{display:flex;gap:clamp(20px,5vw,40px);margin-top:clamp(20px,4.5vw,30px);}
+  .sign-slot{flex:1;min-width:0;}
+  .sign-slot .lbl{font-size:clamp(10px,2.2vw,12px);letter-spacing:.18em;color:var(--brown);opacity:.9;font-family:'Special Elite',monospace;}
+  .sign-slot .lbl .cn{font-family:'Noto Serif SC',serif;font-size:clamp(11px,2.6vw,13px);letter-spacing:.2em;}
+  .sign-line{height:clamp(40px,9vw,52px);margin-top:6px;border-bottom:2px solid var(--brown);position:relative;}
+  .issuer-sign{font-family:'Ma Shan Zheng',cursive;font-size:clamp(28px,7vw,40px);color:var(--ink);padding-left:4px;transform:rotate(-4deg);}
   .line-blank{display:block;height:100%;}
-  .line-signed{display:none;font-family:'Ma Shan Zheng',cursive;font-size:28px;color:var(--red-deep);transform:rotate(-3deg);}
-
-  /* 确认签收按钮 */
+  .line-signed{display:none;font-family:'Ma Shan Zheng',cursive;font-size:clamp(26px,6vw,36px);color:var(--red-deep);transform:rotate(-3deg);}
   .btn-confirm{
     position:absolute;right:4px;bottom:6px;cursor:pointer;border:1px solid var(--orange);
     background:transparent;color:var(--orange);font-family:'Noto Serif SC',serif;
-    font-size:12px;letter-spacing:.15em;padding:5px 14px;border-radius:2px;
+    font-size:clamp(12px,2.8vw,14px);letter-spacing:.15em;padding:6px 16px;border-radius:2px;
     transition:background .2s,color .2s;
   }
   .btn-confirm:hover{background:var(--orange);color:#f8ecd0;}
@@ -145,11 +127,15 @@
   .sign-slot.signed .line-signed{display:block;}
   .sign-slot.signed .btn-confirm{display:none;}
 
+  .meta{display:flex;justify-content:space-between;margin-top:clamp(14px,3vw,20px);border-top:1px dashed var(--line);padding-top:clamp(10px,2vw,14px);font-family:'Special Elite',monospace;flex-wrap:wrap;gap:8px;}
+  .meta .cell{display:flex;flex-direction:column;gap:3px;}
+  .meta .k{font-size:clamp(10px,2.2vw,12px);letter-spacing:.18em;color:var(--brown);opacity:.85;}
+  .meta .v{font-size:clamp(15px,3.5vw,20px);color:var(--red-deep);letter-spacing:.08em;}
+
   /* 盖章 */
   .stamp{
-    position:absolute;top:30%;left:62%;width:150px;height:150px;z-index:6;
-    opacity:0;transform:scale(2.6) rotate(-24deg);transform-origin:center;
-    pointer-events:none;
+    position:absolute;top:32%;left:60%;width:clamp(120px,26vw,170px);height:clamp(120px,26vw,170px);z-index:6;
+    opacity:0;transform:scale(2.6) rotate(-24deg);transform-origin:center;pointer-events:none;
   }
   .stamp.hit{animation:stamp-hit .5s cubic-bezier(.2,1.6,.4,1) forwards;}
   @keyframes stamp-hit{
@@ -160,38 +146,43 @@
   .stamp .st{fill:var(--red);opacity:.88;}
   .stamp .st-text{fill:#f8ecd0;font-family:'Special Elite',monospace;}
   .cheque.shake{animation:shake .3s;}
-  @keyframes shake{0%,100%{transform:translate(0,0) rotateY(0);}25%{transform:translate(-4px,2px) rotateY(0);}50%{transform:translate(4px,-2px) rotateY(0);}75%{transform:translate(-2px,1px) rotateY(0);}}
-
-  /* 控制按钮 */
-  .controls{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
-  .btn.ghost{background:transparent;box-shadow:none;border:1px solid var(--orange);color:var(--orange);}
-  .btn.ghost:hover{background:rgba(200,76,44,.1);box-shadow:none;}
+  @keyframes shake{0%,100%{transform:translate(0,0);}25%{transform:translate(-5px,2px);}50%{transform:translate(5px,-2px);}75%{transform:translate(-3px,1px);}}
 
   /* ---------- 背面 ---------- */
-  .back-inner{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;}
-  .back-inner .doc{font-family:'Abril Fatface',serif;color:var(--orange);font-size:16px;letter-spacing:.2em;}
-  .terms{margin-top:22px;font-size:16px;line-height:2;color:var(--ink);}
-  .terms li{list-style:none;position:relative;padding-left:26px;}
+  .back-screen .cheque{background:
+    radial-gradient(circle at 20% 20%, rgba(200,76,44,.05), transparent 40%), var(--paper);}
+  .back-inner .doc{font-family:'Abril Fatface',serif;color:var(--orange);font-size:clamp(18px,4.5vw,24px);letter-spacing:.2em;}
+  .terms{margin-top:clamp(20px,4vw,28px);font-size:clamp(16px,3.8vw,22px);line-height:2;color:var(--ink);}
+  .terms li{list-style:none;position:relative;padding-left:clamp(24px,5vw,32px);}
   .terms li::before{content:"§";position:absolute;left:0;color:var(--orange);font-family:'Special Elite',monospace;}
-  .terms .en{font-family:'Special Elite',monospace;color:var(--brown);font-size:13px;}
-  .note{margin-top:auto;padding-top:18px;color:var(--brown);font-size:14px;letter-spacing:.05em;text-align:center;}
+  .terms .en{font-family:'Special Elite',monospace;color:var(--brown);font-size:clamp(13px,3vw,16px);}
+  .note{margin-top:auto;padding-top:clamp(20px,4vw,28px);color:var(--brown);font-size:clamp(14px,3.2vw,17px);letter-spacing:.05em;text-align:center;}
   .note .dash{color:var(--line);letter-spacing:.3em;}
+
+  /* ---------- 最后一屏:打印 ---------- */
+  .footer-screen{gap:22px;text-align:center;}
+  .footer-screen h2{font-family:'Abril Fatface',serif;font-size:clamp(30px,8vw,56px);color:#f3e2bd;letter-spacing:.03em;}
+  .footer-screen p{color:#caa876;font-size:clamp(14px,3.2vw,17px);letter-spacing:.15em;line-height:2;}
+  .btn{
+    cursor:pointer;border:none;background:var(--orange);color:#f8ecd0;
+    font-family:'Noto Serif SC',serif;font-size:clamp(16px,3.6vw,19px);letter-spacing:.25em;
+    padding:16px 52px;border-radius:2px;box-shadow:0 5px 0 var(--red-deep);
+    transition:transform .12s ease, box-shadow .12s ease;margin-top:10px;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--red-deep);}
+  .btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--red-deep);}
 
   /* ---------- 打印 ---------- */
   @media print{
-    body{background:#fff;display:block;padding:0;}
-    #intro{display:none !important;}
-    .controls{display:none !important;}
+    *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+    body{background:#fff;}
+    .hero,.footer-screen,.scroll-hint{display:none !important;}
+    .screen{min-height:0;padding:0;opacity:1;transform:none;}
+    .cheque{max-width:100%;box-shadow:none;margin:0 0 24px;}
     .btn-confirm{display:none !important;}
-    #stage{opacity:1;transform:none;}
-    .cheque-scene{perspective:none;max-width:100%;}
-    .cheque{transform:none !important;transition:none;aspect-ratio:auto;}
-    .face{position:relative;inset:auto;backface-visibility:visible;-webkit-backface-visibility:visible;
-      transform:none;box-shadow:none;aspect-ratio:auto;height:auto;min-height:200px;page-break-after:always;}
-    .back{transform:none;page-break-after:auto;}
-    /* 打印版签名栏留空供手写 */
+    /* 签名栏留空供手写 */
     .sign-slot.signed .line-signed{display:none !important;}
-    .sign-slot.signed .line-blank{display:block !important;height:48px;}
+    .sign-slot.signed .line-blank{display:block !important;}
     .sign-line{height:48px;}
     .stamp{display:none !important;}
     .grid{opacity:.35;}
@@ -200,168 +191,150 @@
 </head>
 <body>
 
-  <!-- 开场屏 -->
-  <div id="intro">
-    <div class="intro-seal">Q</div>
-    <div class="intro-title">A TRAVELLER'S CHECK</div>
-    <div class="intro-sub">一份只给你的旅行凭证</div>
-    <button class="btn" id="btn-open" type="button">拆 开</button>
-  </div>
+  <!-- 第1屏:开场 -->
+  <section class="screen hero in" id="s-hero">
+    <div class="seal">Q</div>
+    <h1>A TRAVELLER'S CHECK</h1>
+    <div class="sub">一份只给你的旅行凭证</div>
+    <div class="scroll-hint">往下滑<span class="arrow">↓</span></div>
+  </section>
 
-  <!-- 主场景 -->
-  <div id="stage">
-    <div class="cheque-scene">
-      <div class="cheque" id="cheque">
+  <!-- 第2屏:支票正面 -->
+  <section class="screen cheque-screen" id="s-front">
+    <div class="cheque" id="cheque-front">
+      <div class="perf top"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="perf bottom"><span></span><span></span><span></span><span></span><span></span></div>
 
-        <!-- ============ 正面 ============ -->
-        <section class="face front">
-          <div class="perf top"><span></span><span></span><span></span><span></span><span></span></div>
-          <div class="perf bottom"><span></span><span></span><span></span><span></span><span></span></div>
+      <svg class="grid" viewBox="0 0 860 430" preserveAspectRatio="none">
+        <line x1="86" y1="0" x2="86" y2="430"/><line x1="215" y1="0" x2="215" y2="430"/>
+        <line x1="344" y1="0" x2="344" y2="430"/><line x1="473" y1="0" x2="473" y2="430"/>
+        <line x1="602" y1="0" x2="602" y2="430"/><line x1="731" y1="0" x2="731" y2="430"/>
+        <line x1="0" y1="86" x2="860" y2="86"/><line x1="0" y1="172" x2="860" y2="172"/>
+        <line x1="0" y1="258" x2="860" y2="258"/><line x1="0" y1="344" x2="860" y2="344"/>
+        <text x="8" y="84">60°N</text><text x="8" y="170">30°N</text><text x="8" y="256">0°</text>
+        <text x="8" y="342">30°S</text><text x="852" y="84" text-anchor="end">60°S</text>
+        <text x="90" y="424">90°W</text><text x="348" y="424">0°</text><text x="606" y="424">90°E</text>
+      </svg>
 
-          <!-- 经纬线 -->
-          <svg class="grid" viewBox="0 0 860 430" preserveAspectRatio="none">
-            <line x1="86" y1="0" x2="86" y2="430"/><line x1="215" y1="0" x2="215" y2="430"/>
-            <line x1="344" y1="0" x2="344" y2="430"/><line x1="473" y1="0" x2="473" y2="430"/>
-            <line x1="602" y1="0" x2="602" y2="430"/><line x1="731" y1="0" x2="731" y2="430"/>
-            <line x1="0" y1="86" x2="860" y2="86"/><line x1="0" y1="172" x2="860" y2="172"/>
-            <line x1="0" y1="258" x2="860" y2="258"/><line x1="0" y1="344" x2="860" y2="344"/>
-            <text x="8" y="84">60°N</text><text x="8" y="170">30°N</text><text x="8" y="256">0°</text>
-            <text x="8" y="342">30°S</text><text x="852" y="84" text-anchor="end">60°S</text>
-            <text x="90" y="424">90°W</text><text x="348" y="424">0°</text><text x="606" y="424">90°E</text>
-          </svg>
+      <div class="inner">
+        <div class="head">
+          <div class="issuer">
+            <div class="cn">神秘小奇公司</div>
+            <div class="en">MYSTERY Q &amp; CO.</div>
+          </div>
+          <div class="doc">
+            <div class="en">TRAVELLER'S CHECK</div>
+            <div class="cn">旅行支票</div>
+          </div>
+        </div>
 
-          <div class="front-inner">
-            <div class="head">
-              <div class="issuer">
-                <div class="cn">神秘小奇公司</div>
-                <div class="en">MYSTERY Q &amp; CO.</div>
-              </div>
-              <div class="doc">
-                <div class="en">TRAVELLER'S CHECK</div>
-                <div class="cn">旅行支票</div>
-              </div>
-            </div>
+        <div class="payee">
+          <span class="k">凭票即付 PAY TO</span>
+          <span class="v">小海同学</span>
+        </div>
 
-            <div class="payee">
-              <span class="k">凭票即付 PAY TO</span>
-              <span class="v">小海同学</span>
-            </div>
+        <div class="amount">
+          <div class="en">ONE UNKNOWN JOURNEY</div>
+          <div class="cn">壹次未知的旅行</div>
+        </div>
 
-            <div class="amount">
-              <div class="en">ONE UNKNOWN JOURNEY</div>
-              <div class="cn">壹次未知的旅行</div>
-            </div>
+        <div class="detail">
+          <div class="cell">
+            <span class="k">DESTINATION 目的地</span>
+            <span class="v">未知 · UNKNOWN</span>
+          </div>
+          <div class="cell center">
+            <span class="k">AMOUNT 金额</span>
+            <span class="v">未知 · UNKNOWN</span>
+          </div>
+          <div class="cell right">
+            <span class="k">VALID 有效期</span>
+            <span class="v">三年 · 3 YEARS</span>
+          </div>
+        </div>
 
-            <div class="detail">
-              <div class="cell">
-                <span class="k">DESTINATION 目的地</span>
-                <span class="v">未知 · UNKNOWN</span>
-              </div>
-              <div class="cell" style="text-align:center;">
-                <span class="k">AMOUNT 金额</span>
-                <span class="v">未知 · UNKNOWN</span>
-              </div>
-              <div class="cell" style="text-align:right;">
-                <span class="k">VALID 有效期</span>
-                <span class="v">三年 · 3 YEARS</span>
-              </div>
-            </div>
-
-            <div class="sign-row">
-              <div class="sign-slot issuer">
-                <div class="lbl">SIGNATURE OF ISSUER <span class="cn">签发</span></div>
-                <div class="sign-line"><span class="issuer-sign">Q</span></div>
-              </div>
-              <div class="sign-slot holder" id="holder">
-                <div class="lbl">SIGNATURE OF HOLDER <span class="cn">持票人签名</span></div>
-                <div class="sign-line">
-                  <span class="line-blank"></span>
-                  <span class="line-signed">小海同学 · 已签收</span>
-                  <button class="btn-confirm" id="btn-confirm" type="button">确认签收</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="detail" style="margin-top:14px;border-top:1px dashed var(--line);padding-top:10px;">
-              <div class="cell"><span class="k">NO. 编号</span><span class="v">20250905</span></div>
-              <div class="cell" style="text-align:right;"><span class="k">ISSUE DATE 出票日</span><span class="v">2025.09.05</span></div>
+        <div class="sign-row">
+          <div class="sign-slot issuer">
+            <div class="lbl">SIGNATURE OF ISSUER <span class="cn">签发</span></div>
+            <div class="sign-line"><span class="issuer-sign">Q</span></div>
+          </div>
+          <div class="sign-slot holder" id="holder">
+            <div class="lbl">SIGNATURE OF HOLDER <span class="cn">持票人签名</span></div>
+            <div class="sign-line">
+              <span class="line-blank"></span>
+              <span class="line-signed">小海同学 · 已签收</span>
+              <button class="btn-confirm" id="btn-confirm" type="button">确认签收</button>
             </div>
           </div>
+        </div>
 
-          <!-- 邮戳(签收后盖上) -->
-          <svg class="stamp" id="stamp" viewBox="0 0 100 100">
-            <circle class="st" cx="50" cy="50" r="48" fill="none" stroke-width="2"/>
-            <circle class="st" cx="50" cy="50" r="36" fill="none" stroke-width="1"/>
-            <defs>
-              <path id="stampRing" d="M50,50 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/>
-            </defs>
-            <text class="st-text" font-size="8.5" letter-spacing="1">
-              <textPath href="#stampRing">神秘小奇公司 · MYSTERY Q &amp; CO.</textPath>
-            </text>
-            <text class="st-text" x="50" y="50" text-anchor="middle" font-size="11">兑付专用</text>
-            <text class="st-text" x="50" y="61" text-anchor="middle" font-size="7">2025.09.05</text>
-          </svg>
-        </section>
+        <div class="meta">
+          <div class="cell"><span class="k">NO. 编号</span><span class="v">20250905</span></div>
+          <div class="cell" style="text-align:right;"><span class="k">ISSUE DATE 出票日</span><span class="v">2025.09.05</span></div>
+        </div>
+      </div>
 
-        <!-- ============ 背面 ============ -->
-        <section class="face back">
-          <div class="perf top"><span></span><span></span><span></span><span></span><span></span></div>
-          <div class="perf bottom"><span></span><span></span><span></span><span></span><span></span></div>
-          <div class="back-inner">
-            <div class="doc">TERMS · 兑换条款</div>
-            <ul class="terms">
-              <li>凭此支票到「神秘小奇公司」兑换,有效期三年。<br><span class="en">Redeemable at Mystery Q &amp; Co. within three years.</span></li>
-            </ul>
-            <div class="note">
-              <span class="dash">— — — — — — — — — — — —</span><br>
-              ( 一段话 · 待填 )
-            </div>
-          </div>
-        </section>
+      <svg class="stamp" id="stamp" viewBox="0 0 100 100">
+        <circle class="st" cx="50" cy="50" r="48" fill="none" stroke-width="2"/>
+        <circle class="st" cx="50" cy="50" r="36" fill="none" stroke-width="1"/>
+        <defs><path id="stampRing" d="M50,50 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs>
+        <text class="st-text" font-size="8.5" letter-spacing="1">
+          <textPath href="#stampRing">神秘小奇公司 · MYSTERY Q &amp; CO.</textPath>
+        </text>
+        <text class="st-text" x="50" y="50" text-anchor="middle" font-size="11">兑付专用</text>
+        <text class="st-text" x="50" y="61" text-anchor="middle" font-size="7">2025.09.05</text>
+      </svg>
+    </div>
+  </section>
 
+  <!-- 第3屏:背面条款 -->
+  <section class="screen back-screen" id="s-back">
+    <div class="cheque">
+      <div class="perf top"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="perf bottom"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="inner back-inner">
+        <div class="doc">TERMS · 兑换条款</div>
+        <ul class="terms">
+          <li>凭此支票到「神秘小奇公司」兑换,有效期三年。<br><span class="en">Redeemable at Mystery Q &amp; Co. within three years.</span></li>
+        </ul>
+        <div class="note">
+          <span class="dash">— — — — — — — — — — — —</span><br>
+          ( 一段话 · 待填 )
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="controls">
-      <button class="btn" id="btn-flip" type="button">查看背面条款</button>
-      <button class="btn ghost" id="btn-print" type="button">打印 / 手写签字</button>
-    </div>
-  </div>
+  <!-- 第4屏:打印 -->
+  <section class="screen footer-screen" id="s-footer">
+    <h2>THAT'S IT.</h2>
+    <p>这是给你的承诺,<br>请妥善保管。</p>
+    <button class="btn" id="btn-print" type="button">打印 / 手写签字</button>
+  </section>
 
 <script>
-  const intro = document.getElementById('intro');
-  const stage = document.getElementById('stage');
-  const cheque = document.getElementById('cheque');
   const holder = document.getElementById('holder');
   const stamp = document.getElementById('stamp');
-  const btnOpen = document.getElementById('btn-open');
   const btnConfirm = document.getElementById('btn-confirm');
-  const btnFlip = document.getElementById('btn-flip');
   const btnPrint = document.getElementById('btn-print');
 
-  // 拆开 → 支票浮现
-  btnOpen.addEventListener('click', () => {
-    intro.classList.add('hide');
-    stage.classList.add('show');
-  });
+  // 滚动淡入
+  const screens = document.querySelectorAll('.screen');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.2 });
+  screens.forEach(s => io.observe(s));
 
   // 确认签收 → 盖章 + 震动
   btnConfirm.addEventListener('click', () => {
     holder.classList.add('signed');
     stamp.classList.remove('hit');
-    void stamp.offsetWidth;          // 重置动画
+    void stamp.offsetWidth;
     stamp.classList.add('hit');
-    cheque.classList.remove('shake');
-    void cheque.offsetWidth;
-    cheque.classList.add('shake');
-  });
-
-  // 翻转
-  let flipped = false;
-  btnFlip.addEventListener('click', () => {
-    flipped = !flipped;
-    cheque.classList.toggle('flipped', flipped);
-    btnFlip.textContent = flipped ? '翻回正面' : '查看背面条款';
+    const c = document.getElementById('cheque-front');
+    c.classList.remove('shake');
+    void c.offsetWidth;
+    c.classList.add('shake');
   });
 
   // 打印
