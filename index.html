@@ -44,7 +44,7 @@
     font-family:'Noto Serif SC',serif;font-weight:300;
     font-size:clamp(22px,5.6vw,40px);
     color:var(--text);letter-spacing:.1em;line-height:2;
-    transition:opacity .5s ease, transform .5s ease;
+    transition:opacity .8s ease, transform .8s ease;
   }
   .pline.out{opacity:0;transform:translateY(-16px);}
   .phint{
@@ -345,12 +345,20 @@
   const egg = document.getElementById('egg');
 
   const lines = [
-    '你好,来自地球的搭车客',
-    '何其有幸能够遇见你',
-    '这是宇宙历史上第二不可能事件',
-    '所以,',
+    '你好',
+    '地球的搭车客',
+    '何其有幸',
+    '能够遇见你',
+    '据说',
+    '这是宇宙第二不可能事件',
+    '至于第一',
+    '其实无关紧要了',
+    '所以',
     '真的很神奇',
-    '来自银河系一处坐标未知的公司——神秘小奇,诚挚的给你留下了一张未被打印的支票'
+    '来自银河系一处坐标未知的公司',
+    '神秘小奇',
+    '诚挚的给你留下了一张',
+    '未被打印的支票'
   ];
 
   let idx = 0;
@@ -369,7 +377,7 @@
       if (i === lines.length - 1) {
         phint.textContent = '〔 点击展开 〕';
       }
-    }, 440);
+    }, 750);
   }
 
   prologue.addEventListener('click', () => {
