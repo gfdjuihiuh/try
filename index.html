@@ -200,13 +200,19 @@
   }
   .btn:hover{background:var(--gold);color:#0c0c10;}
 
-  /* ================= 打印 ================= */
+  /* ================= 打印(浅色版,便于手写签字) ================= */
   @media print{
+    :root{
+      --bg:#fff; --card:#ffffff; --text:#1a1712; --muted:#6a5d45;
+      --gold:#7c5a20; --gold-deep:#8a7448; --line:rgba(58,42,24,.42);
+    }
     *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
     body{background:#fff;}
     #prologue,.footer-screen{display:none !important;}
     .screen{min-height:0;padding:0;opacity:1;transform:none;}
-    .cheque{max-width:100%;box-shadow:none;margin:0 0 24px;}
+    .cheque{max-width:100%;box-shadow:none;margin:0 0 24px;background:#ffffff;}
+    .cheque::before{border-color:rgba(58,42,24,.28);}
+    .amount .big-q{color:rgba(0,0,0,.05);}
     .btn-confirm{display:none !important;}
     .sign-slot.signed .line-signed{display:none !important;}
     .sign-slot.signed .line-blank{display:block !important;}
