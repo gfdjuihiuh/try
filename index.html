@@ -339,8 +339,11 @@
     '来自银河系一处坐标未知的公司——神秘小奇,诚挚的给你留下了一张未被打印的支票'
   ];
 
-  let idx = -1;
+  let idx = 0;
   let busy = false;
+
+  // 打开即显示第一句话
+  pline.textContent = lines[0];
 
   function showLine(i){
     busy = true;
@@ -351,7 +354,6 @@
       busy = false;
       if (i === lines.length - 1) {
         phint.textContent = '〔 点击展开 〕';
-        phint.style.display = 'block';
       }
     }, 420);
   }
@@ -360,7 +362,6 @@
     if (busy) return;
     if (idx < lines.length - 1) {
       idx++;
-      phint.style.display = 'none';
       showLine(idx);
     } else {
       prologue.classList.add('hide');
