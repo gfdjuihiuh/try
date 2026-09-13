@@ -6,7 +6,7 @@
 <title>旅行支票 · 神秘小奇公司</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Special+Elite&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;600;700;900&family=Special+Elite&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#f3e2bd;
@@ -28,8 +28,42 @@
     background-image:radial-gradient(1400px 900px at 50% 0%,#3a2413 0%,#1c1208 70%);
     overflow-x:hidden;
   }
+  body.lock{overflow:hidden;height:100vh;}
 
-  /* ---------- 每一屏 ---------- */
+  /* ================= 开场:逐句点击浮现 ================= */
+  #prologue{
+    position:fixed;inset:0;z-index:100;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    background:
+      radial-gradient(1px 1px at 18% 24%, rgba(255,255,255,.9), transparent 50%),
+      radial-gradient(1px 1px at 74% 18%, rgba(255,255,255,.7), transparent 50%),
+      radial-gradient(1.5px 1.5px at 42% 72%, rgba(255,255,255,.6), transparent 50%),
+      radial-gradient(1px 1px at 88% 62%, rgba(255,255,255,.8), transparent 50%),
+      radial-gradient(1px 1px at 8% 78%, rgba(255,255,255,.7), transparent 50%),
+      radial-gradient(1.5px 1.5px at 60% 88%, rgba(255,255,255,.5), transparent 50%),
+      radial-gradient(1px 1px at 30% 50%, rgba(255,255,255,.5), transparent 50%),
+      radial-gradient(1px 1px at 82% 38%, rgba(255,255,255,.6), transparent 50%),
+      radial-gradient(ellipse at 50% 40%, #161c30 0%, #070a14 78%);
+    padding:40px 28px;
+    transition:opacity .9s ease, visibility .9s;
+  }
+  #prologue.hide{opacity:0;visibility:hidden;pointer-events:none;}
+  .pline{
+    max-width:22em;text-align:center;
+    font-family:'Noto Serif SC',serif;font-weight:300;
+    font-size:clamp(22px,5.6vw,40px);
+    color:#efe8d6;letter-spacing:.09em;line-height:1.95;
+    transition:opacity .45s ease, transform .45s ease;
+  }
+  .pline.out{opacity:0;transform:translateY(-16px);}
+  .phint{
+    position:absolute;bottom:14vh;left:0;right:0;text-align:center;
+    font-size:13px;letter-spacing:.5em;color:rgba(239,232,214,.5);
+    animation:hint-breath 2.6s ease-in-out infinite;
+  }
+  @keyframes hint-breath{0%,100%{opacity:.35;}50%{opacity:.9;}}
+
+  /* ================= 每一屏 ================= */
   .screen{
     min-height:100vh;min-height:100svh;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -39,22 +73,7 @@
   }
   .screen.in{opacity:1;transform:none;}
 
-  /* ---------- 第1屏:开场 ---------- */
-  .hero{gap:24px;text-align:center;}
-  .hero .seal{
-    width:96px;height:96px;border-radius:50%;
-    border:3px dashed var(--orange);color:var(--orange);
-    display:flex;align-items:center;justify-content:center;
-    font-family:'MedievalSharp',serif;font-size:36px;line-height:1;
-    transform:rotate(-8deg);
-  }
-  .hero h1{font-family:'MedievalSharp',serif;font-size:clamp(40px,10vw,88px);color:#f3e2bd;letter-spacing:.03em;line-height:1.05;}
-  .hero .sub{font-size:clamp(15px,3.5vw,20px);letter-spacing:.4em;color:#caa876;margin-top:6px;}
-  .scroll-hint{margin-top:34px;color:#caa876;font-size:13px;letter-spacing:.3em;animation:float 2s ease-in-out infinite;}
-  .scroll-hint .arrow{display:block;font-size:26px;margin-top:6px;}
-  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(8px);}}
-
-  /* ---------- 支票卡片 ---------- */
+  /* ================= 支票卡片 ================= */
   .cheque{
     width:100%;max-width:900px;
     position:relative;
@@ -98,7 +117,7 @@
   .payee .v{font-size:clamp(24px,6vw,34px);font-weight:700;border-bottom:2px solid var(--brown);padding:0 8px 4px;letter-spacing:.1em;}
 
   .amount{margin-top:clamp(18px,4.5vw,32px);text-align:center;}
-  .amount .en{font-family:'MedievalSharp',serif;font-size:clamp(40px,11vw,84px);color:var(--orange);line-height:1;letter-spacing:.02em;}
+  .amount .en{font-family:'MedievalSharp',serif;font-size:clamp(38px,10.5vw,80px);color:var(--orange);line-height:1;letter-spacing:.02em;}
   .amount .cn{font-size:clamp(20px,5vw,30px);letter-spacing:.4em;color:var(--brown);margin-top:8px;}
 
   .detail{display:flex;justify-content:space-between;margin-top:clamp(18px,4vw,30px);font-family:'Special Elite',monospace;gap:10px;flex-wrap:wrap;}
@@ -132,7 +151,6 @@
   .meta .k{font-size:clamp(10px,2.2vw,12px);letter-spacing:.18em;color:var(--brown);opacity:.85;}
   .meta .v{font-size:clamp(15px,3.5vw,20px);color:var(--red-deep);letter-spacing:.08em;}
 
-  /* 盖章 */
   .stamp{
     position:absolute;top:32%;left:60%;width:clamp(120px,26vw,170px);height:clamp(120px,26vw,170px);z-index:6;
     opacity:0;transform:scale(2.6) rotate(-24deg);transform-origin:center;pointer-events:none;
@@ -148,20 +166,18 @@
   .cheque.shake{animation:shake .3s;}
   @keyframes shake{0%,100%{transform:translate(0,0);}25%{transform:translate(-5px,2px);}50%{transform:translate(5px,-2px);}75%{transform:translate(-3px,1px);}}
 
-  /* ---------- 背面 ---------- */
+  /* ================= 背面 ================= */
   .back-screen .cheque{background:
     radial-gradient(circle at 20% 20%, rgba(200,76,44,.05), transparent 40%), var(--paper);}
-  .back-inner .doc{font-family:'MedievalSharp',serif;color:var(--orange);font-size:clamp(18px,4.5vw,24px);letter-spacing:.2em;}
-  .terms{margin-top:clamp(20px,4vw,28px);font-size:clamp(16px,3.8vw,22px);line-height:2;color:var(--ink);}
+  .back-inner .doc{font-family:'MedievalSharp',serif;color:var(--orange);font-size:clamp(20px,5vw,28px);letter-spacing:.2em;}
+  .terms{margin-top:clamp(22px,4.5vw,32px);font-size:clamp(16px,3.8vw,22px);line-height:2;color:var(--ink);}
   .terms li{list-style:none;position:relative;padding-left:clamp(24px,5vw,32px);}
   .terms li::before{content:"§";position:absolute;left:0;color:var(--orange);font-family:'Special Elite',monospace;}
   .terms .en{font-family:'Special Elite',monospace;color:var(--brown);font-size:clamp(13px,3vw,16px);}
-  .note{margin-top:auto;padding-top:clamp(20px,4vw,28px);color:var(--brown);font-size:clamp(14px,3.2vw,17px);letter-spacing:.05em;text-align:center;}
-  .note .dash{color:var(--line);letter-spacing:.3em;}
 
-  /* ---------- 最后一屏:打印 ---------- */
+  /* ================= 最后一屏:打印 ================= */
   .footer-screen{gap:22px;text-align:center;}
-  .footer-screen h2{font-family:'MedievalSharp',serif;font-size:clamp(30px,8vw,56px);color:#f3e2bd;letter-spacing:.03em;}
+  .footer-screen h2{font-family:'MedievalSharp',serif;font-size:clamp(32px,8vw,60px);color:#f3e2bd;letter-spacing:.03em;}
   .footer-screen p{color:#caa876;font-size:clamp(14px,3.2vw,17px);letter-spacing:.15em;line-height:2;}
   .btn{
     cursor:pointer;border:none;background:var(--orange);color:#f8ecd0;
@@ -172,15 +188,14 @@
   .btn:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--red-deep);}
   .btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--red-deep);}
 
-  /* ---------- 打印 ---------- */
+  /* ================= 打印 ================= */
   @media print{
     *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
     body{background:#fff;}
-    .hero,.footer-screen,.scroll-hint{display:none !important;}
+    #prologue,.footer-screen{display:none !important;}
     .screen{min-height:0;padding:0;opacity:1;transform:none;}
     .cheque{max-width:100%;box-shadow:none;margin:0 0 24px;}
     .btn-confirm{display:none !important;}
-    /* 签名栏留空供手写 */
     .sign-slot.signed .line-signed{display:none !important;}
     .sign-slot.signed .line-blank{display:block !important;}
     .sign-line{height:48px;}
@@ -189,17 +204,15 @@
   }
 </style>
 </head>
-<body>
+<body class="lock">
 
-  <!-- 第1屏:开场 -->
-  <section class="screen hero in" id="s-hero">
-    <div class="seal">Q</div>
-    <h1>A TRAVELLER'S CHECK</h1>
-    <div class="sub">一份只给你的旅行凭证</div>
-    <div class="scroll-hint">往下滑<span class="arrow">↓</span></div>
-  </section>
+  <!-- 开场:逐句点击浮现 -->
+  <div id="prologue">
+    <div class="pline" id="pline"></div>
+    <div class="phint" id="phint">〔 点击 〕</div>
+  </div>
 
-  <!-- 第2屏:支票正面 -->
+  <!-- 第1屏:支票正面 -->
   <section class="screen cheque-screen" id="s-front">
     <div class="cheque" id="cheque-front">
       <div class="perf top"><span></span><span></span><span></span><span></span><span></span></div>
@@ -287,7 +300,7 @@
     </div>
   </section>
 
-  <!-- 第3屏:背面条款 -->
+  <!-- 第2屏:背面条款 -->
   <section class="screen back-screen" id="s-back">
     <div class="cheque">
       <div class="perf top"><span></span><span></span><span></span><span></span><span></span></div>
@@ -297,15 +310,11 @@
         <ul class="terms">
           <li>凭此支票到「神秘小奇公司」兑换,有效期三年。<br><span class="en">Redeemable at Mystery Q &amp; Co. within three years.</span></li>
         </ul>
-        <div class="note">
-          <span class="dash">— — — — — — — — — — — —</span><br>
-          ( 一段话 · 待填 )
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- 第4屏:打印 -->
+  <!-- 第3屏:打印 -->
   <section class="screen footer-screen" id="s-footer">
     <h2>THAT'S IT.</h2>
     <p>这是给你的承诺,<br>请妥善保管。</p>
@@ -313,10 +322,52 @@
   </section>
 
 <script>
+  const prologue = document.getElementById('prologue');
+  const pline = document.getElementById('pline');
+  const phint = document.getElementById('phint');
   const holder = document.getElementById('holder');
   const stamp = document.getElementById('stamp');
   const btnConfirm = document.getElementById('btn-confirm');
   const btnPrint = document.getElementById('btn-print');
+
+  const lines = [
+    '你好,来自地球的搭车客',
+    '何其有幸能够遇见你',
+    '这是宇宙历史上第二不可能事件',
+    '所以,',
+    '真的很神奇',
+    '来自银河系一处坐标未知的公司——神秘小奇,诚挚的给你留下了一张未被打印的支票'
+  ];
+
+  let idx = -1;
+  let busy = false;
+
+  function showLine(i){
+    busy = true;
+    pline.classList.add('out');
+    setTimeout(() => {
+      pline.textContent = lines[i];
+      pline.classList.remove('out');
+      busy = false;
+      if (i === lines.length - 1) {
+        phint.textContent = '〔 点击展开 〕';
+        phint.style.display = 'block';
+      }
+    }, 420);
+  }
+
+  prologue.addEventListener('click', () => {
+    if (busy) return;
+    if (idx < lines.length - 1) {
+      idx++;
+      phint.style.display = 'none';
+      showLine(idx);
+    } else {
+      prologue.classList.add('hide');
+      document.body.classList.remove('lock');
+      window.scrollTo(0, 0);
+    }
+  });
 
   // 滚动淡入
   const screens = document.querySelectorAll('.screen');
