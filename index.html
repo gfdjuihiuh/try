@@ -123,7 +123,8 @@
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,4vw,30px) clamp(24px,5vw,44px);margin-top:clamp(18px,4vw,30px);}
   .g-lbl{font-size:clamp(11px,2.4vw,13px);letter-spacing:.18em;color:var(--muted);font-family:'Special Elite',monospace;}
   .g-val{font-size:clamp(22px,5.5vw,34px);color:var(--gold);letter-spacing:.05em;margin-top:5px;white-space:nowrap;}
-  .g-val.issuer-sign{font-family:'Ma Shan Zheng',cursive;color:var(--text);font-size:clamp(32px,7.5vw,44px);transform:rotate(-4deg);border-bottom:1px solid var(--line);min-height:1.5em;}
+  .g-val.issuer-sign{border-bottom:1px solid var(--line);min-height:1.5em;}
+  .g-val.issuer-sign .q{font-family:'Ma Shan Zheng',cursive;color:var(--text);font-size:clamp(32px,7.5vw,44px);transform:rotate(-4deg);display:inline-block;}
   .g-val.sign-area{border-bottom:1px solid var(--line);min-height:1.5em;white-space:nowrap;}
   .line-blank{display:block;}
   .line-signed{display:none;font-family:'Ma Shan Zheng',cursive;font-size:clamp(24px,6vw,34px);color:var(--gold);transform:rotate(-3deg);}
@@ -279,7 +280,7 @@
           </div>
           <div class="g-cell">
             <div class="g-lbl">SIGNATURE OF ISSUER 签发</div>
-            <div class="g-val issuer-sign">Q</div>
+            <div class="g-val issuer-sign"><span class="q">Q</span></div>
           </div>
           <div class="g-cell holder" id="holder">
             <div class="g-lbl">SIGNATURE OF HOLDER 持票人签名</div>
