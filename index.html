@@ -53,17 +53,6 @@
     animation:hint-breath 2.8s ease-in-out infinite;
   }
   .phint.dot{font-size:22px;letter-spacing:0;}
-
-  /* 音乐开关 */
-  .mute{
-    position:fixed;top:18px;right:18px;z-index:200;
-    width:42px;height:42px;border-radius:50%;
-    border:1px solid var(--line);background:rgba(20,20,26,.55);color:var(--gold);
-    cursor:pointer;font-size:18px;line-height:1;
-    display:flex;align-items:center;justify-content:center;
-    transition:opacity .3s,color .3s;
-  }
-  .mute.off{color:var(--muted);opacity:.45;text-decoration:line-through;}
   @keyframes hint-breath{0%,100%{opacity:.35;}50%{opacity:.9;}}
 
   /* ================= 每一屏 ================= */
@@ -203,7 +192,6 @@
   /* ================= 最后一屏:打印 ================= */
   .footer-screen{gap:22px;text-align:center;}
   .footer-screen h2{font-family:'MedievalSharp',serif;font-size:clamp(32px,8vw,60px);color:var(--text);letter-spacing:.03em;}
-  .footer-screen .credit{margin-top:18px;font-size:11px;letter-spacing:.06em;color:var(--muted);opacity:.5;}
   .footer-screen p{color:var(--muted);font-size:clamp(14px,3.2vw,17px);letter-spacing:.15em;line-height:2;}
   .btn{
     cursor:pointer;border:1px solid var(--gold);background:transparent;color:var(--gold);
@@ -221,7 +209,7 @@
     }
     *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
     body{background:#fff;}
-    #prologue,.footer-screen,.mute,.back-screen{display:none !important;}
+    #prologue,.footer-screen,.back-screen{display:none !important;}
     .screen{min-height:0;padding:0;opacity:1;transform:none;}
     .cheque{max-width:100%;box-shadow:none;margin:0 0 24px;background:#ffffff;}
     .cheque::before{border-color:rgba(58,42,24,.28);}
@@ -235,9 +223,6 @@
 </style>
 </head>
 <body class="lock">
-
-  <audio id="bgm" loop preload="auto" src="gymnopedie-no1.mp3"></audio>
-  <button class="mute" id="mute" type="button" title="音乐开关">♪</button>
 
   <!-- 开场:逐句点击浮现 -->
   <div id="prologue">
@@ -347,7 +332,6 @@
   <section class="screen footer-screen" id="s-footer">
     <h2>THAT'S IT.</h2>
     <button class="btn" id="btn-print" type="button">PRINT</button>
-    <div class="credit">Music · Gymnopédie No.1 by Kevin MacLeod (incompetech.com) · CC BY 4.0</div>
   </section>
 
 <script>
@@ -359,8 +343,6 @@
   const btnConfirm = document.getElementById('btn-confirm');
   const btnPrint = document.getElementById('btn-print');
   const egg = document.getElementById('egg');
-  const bgm = document.getElementById('bgm');
-  const muteBtn = document.getElementById('mute');
 
   const lines = [
     '你好',
@@ -400,16 +382,7 @@
     }, 750);
   }
 
-  let bgmStarted = false;
-  function startBgm(){
-    if (bgmStarted) return;
-    bgmStarted = true;
-    bgm.volume = 0.35;
-    bgm.play().catch(() => {});
-  }
-
   prologue.addEventListener('click', () => {
-    startBgm();
     if (busy) return;
     if (idx < lines.length - 1) {
       idx++;
@@ -419,11 +392,6 @@
       document.body.classList.remove('lock');
       window.scrollTo(0, 0);
     }
-  });
-
-  muteBtn.addEventListener('click', () => {
-    bgm.muted = !bgm.muted;
-    muteBtn.classList.toggle('off', bgm.muted);
   });
 
   // 滚动淡入
