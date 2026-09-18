@@ -119,26 +119,30 @@
   .route .dot{fill:var(--gold);}
   .route .qmark{fill:var(--gold);font-family:'MedievalSharp',serif;font-size:26px;}
 
-  /* 信息字段(竖排一列) */
-  .fields{list-style:none;display:flex;flex-direction:column;gap:clamp(12px,2.8vw,18px);margin-top:clamp(20px,4.5vw,30px);}
-  .fld{display:flex;align-items:baseline;gap:12px;}
-  .fld .lbl{font-size:clamp(10px,2.2vw,12px);letter-spacing:.18em;color:var(--muted);font-family:'Special Elite',monospace;white-space:nowrap;}
-  .fld .dots{flex:1;border-bottom:1px dotted var(--line);transform:translateY(-3px);min-width:20px;}
-  .fld .val{font-size:clamp(16px,3.8vw,22px);color:var(--gold);letter-spacing:.06em;white-space:nowrap;}
-  .fld .val.issuer-sign{font-family:'Ma Shan Zheng',cursive;color:var(--text);font-size:clamp(24px,5.5vw,32px);transform:rotate(-4deg);}
-  .fld .val.mag{letter-spacing:.2em;}
-  .fld .sign-area{flex:1;max-width:230px;border-bottom:1px solid var(--line);min-height:1.4em;position:relative;white-space:nowrap;}
+  /* 主要字段(两行两列,大字) */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,4vw,30px) clamp(24px,5vw,44px);margin-top:clamp(18px,4vw,30px);}
+  .g-lbl{font-size:clamp(11px,2.4vw,13px);letter-spacing:.18em;color:var(--muted);font-family:'Special Elite',monospace;}
+  .g-val{font-size:clamp(22px,5.5vw,34px);color:var(--gold);letter-spacing:.05em;margin-top:5px;white-space:nowrap;}
+  .g-val.issuer-sign{font-family:'Ma Shan Zheng',cursive;color:var(--text);font-size:clamp(32px,7.5vw,44px);transform:rotate(-4deg);}
+  .g-val.sign-area{border-bottom:1px solid var(--line);min-height:1.5em;white-space:nowrap;}
   .line-blank{display:block;}
-  .line-signed{display:none;font-family:'Ma Shan Zheng',cursive;font-size:clamp(20px,5vw,28px);color:var(--gold);transform:rotate(-3deg);}
+  .line-signed{display:none;font-family:'Ma Shan Zheng',cursive;font-size:clamp(24px,6vw,34px);color:var(--gold);transform:rotate(-3deg);}
   .btn-confirm{
     cursor:pointer;border:1px solid var(--gold);background:transparent;color:var(--gold);
     font-family:'Noto Serif SC',serif;font-size:clamp(12px,2.8vw,14px);letter-spacing:.15em;
-    padding:5px 14px;border-radius:2px;transition:background .2s,color .2s;
+    padding:5px 14px;border-radius:2px;margin-top:8px;transition:background .2s,color .2s;
   }
   .btn-confirm:hover{background:var(--gold);color:#0c0c10;}
-  .fld.holder.signed .line-blank{display:none;}
-  .fld.holder.signed .line-signed{display:inline-block;}
-  .fld.holder.signed .btn-confirm{display:none;}
+  .g-cell.holder.signed .line-blank{display:none;}
+  .g-cell.holder.signed .line-signed{display:inline-block;}
+  .g-cell.holder.signed .btn-confirm{display:none;}
+
+  /* 底部:编号 / 磁性号码 */
+  .meta-row{display:flex;justify-content:space-between;align-items:flex-end;margin-top:clamp(18px,4vw,28px);border-top:1px solid var(--line);padding-top:clamp(12px,2.5vw,16px);font-family:'Special Elite',monospace;gap:20px;}
+  .m-item{display:flex;flex-direction:column;gap:3px;}
+  .m-item.right{text-align:right;}
+  .m-k{font-size:clamp(10px,2.2vw,12px);letter-spacing:.18em;color:var(--muted);}
+  .m-v{font-size:clamp(15px,3.4vw,20px);color:var(--gold);letter-spacing:.1em;}
 
   /* 盖章(金色) */
   .cheque.shake{animation:shake .3s;}
@@ -188,8 +192,8 @@
     .cheque::before{border-color:rgba(58,42,24,.28);}
     .amount .big-q{color:rgba(0,0,0,.05);}
     .btn-confirm{display:none !important;}
-    .fld.holder.signed .line-signed{display:none !important;}
-    .fld.holder.signed .line-blank{display:block !important;}
+    .g-cell.holder.signed .line-signed{display:none !important;}
+    .g-cell.holder.signed .line-blank{display:block !important;}
   }
 </style>
 </head>
@@ -233,25 +237,33 @@
           <text class="qmark" x="490" y="60" text-anchor="middle">?</text>
         </svg>
 
-        <ul class="fields">
-          <li class="fld"><span class="lbl">DESTINATION 目的地</span><span class="dots"></span><span class="val">未知 · UNKNOWN</span></li>
-          <li class="fld"><span class="lbl">AMOUNT 金额</span><span class="dots"></span><span class="val">未知 · UNKNOWN</span></li>
-          <li class="fld"><span class="lbl">VALID 有效期</span><span class="dots"></span><span class="val">三年 · 3 YEARS</span></li>
-          <li class="fld"><span class="lbl">SIGNATURE OF ISSUER 签发</span><span class="dots"></span><span class="val issuer-sign">Q</span></li>
-          <li class="fld holder" id="holder">
-            <span class="lbl">SIGNATURE OF HOLDER 持票人签名</span>
-            <span class="dots"></span>
-            <span class="val sign-area">
+        <div class="grid2">
+          <div class="g-cell">
+            <div class="g-lbl">DESTINATION 目的地</div>
+            <div class="g-val">未知 · UNKNOWN</div>
+          </div>
+          <div class="g-cell">
+            <div class="g-lbl">AMOUNT 金额</div>
+            <div class="g-val">未知 · UNKNOWN</div>
+          </div>
+          <div class="g-cell">
+            <div class="g-lbl">SIGNATURE OF ISSUER 签发</div>
+            <div class="g-val issuer-sign">Q</div>
+          </div>
+          <div class="g-cell holder" id="holder">
+            <div class="g-lbl">SIGNATURE OF HOLDER 持票人签名</div>
+            <div class="g-val sign-area">
               <span class="line-blank"></span>
               <span class="line-signed">小海同学 · 已签收</span>
-            </span>
+            </div>
             <button class="btn-confirm" id="btn-confirm" type="button">确认签收</button>
-          </li>
-          <li class="fld"><span class="lbl">NO. 编号</span><span class="dots"></span><span class="val">20250905</span></li>
-          <li class="fld"><span class="lbl">ISSUE DATE 出票日</span><span class="dots"></span><span class="val">2025.09.05</span></li>
-          <li class="fld"><span class="lbl">ISSUE PLACE 签发地</span><span class="dots"></span><span class="val">银河系 · 坐标未知</span></li>
-          <li class="fld"><span class="lbl">MAGNETIC CODE 磁性号码</span><span class="dots"></span><span class="val mag">MRQC-0905-0001</span></li>
-        </ul>
+          </div>
+        </div>
+
+        <div class="meta-row">
+          <span class="m-item"><span class="m-k">NO. 编号</span><span class="m-v">20250905</span></span>
+          <span class="m-item right"><span class="m-k">MAGNETIC CODE 磁性号码</span><span class="m-v">MRQC-0905-0001</span></span>
+        </div>
       </div>
 
     </div>
